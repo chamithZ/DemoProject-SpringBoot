@@ -38,6 +38,38 @@ public class UserService {
         userRepo.delete(modelMapper.map(userDTO,User.class));
         return true;
     }
+    public UserDTO getUserById(String userID){
+        User user=userRepo.getUserByUserID(userID);
+        return modelMapper.map(user,UserDTO.class);
+    }
+
+    public UserDTO getUserByAddress(String userID,String address){
+        User user= userRepo.getUserByAddress(userID,address);
+        return modelMapper.map(user,UserDTO.class);
+    }
+    public UserDTO updateUserById(String userID){
+        User user =userRepo.updateUserByID(userID);
+        return modelMapper.map(user,UserDTO.class);
+    }
+
+
+
+    public UserDTO updateUserById(String userID, UserDTO updatedUserDTO) {
+        User existingUser = userRepo.getUserByUserID(userID);
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User not found with ID: " + userID);
+        }
+
+        // Update the properties of the existing user with the values from updatedUserDTO
+        existingUser.setName(updatedUserDTO.getName());
+        existingUser.setAddress(updatedUserDTO.getAddress());
+        // Update other properties accordingly
+
+        // Save the updated user
+        User updatedUser = userRepo.save(existingUser);
+
+        return modelMapper.map(updatedUser, UserDTO.class);
+    }
 
 
 }

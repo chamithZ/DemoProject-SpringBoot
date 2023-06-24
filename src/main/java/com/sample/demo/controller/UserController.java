@@ -1,10 +1,11 @@
 package com.sample.demo.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.sample.demo.dto.UserDTO;
 import com.sample.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.*;
 import java.util.List;
 
 @RestController
@@ -35,5 +36,21 @@ public class UserController {
         return userService.deleteUser(userDTO);
     }
 
+    @GetMapping("/getUser/{userID}")
+    public UserDTO getUserById(@PathVariable String userID){
+        return userService.getUserById(userID);
+    }
 
+    @GetMapping("/getUserByAddress/{userID}/{address}")
+    public UserDTO getUserByAddress(@PathVariable String userID,@PathVariable String address){
+
+        return userService.getUserByAddress(userID,address);
+    }
+
+    @PutMapping("update/{id}")
+    public UserDTO updateUserById(@PathVariable("id") String userId,
+                                                  @RequestBody UserDTO updatedUserDTO) {
+        UserDTO updatedUser = userService.updateUserById(userId, updatedUserDTO);
+        return updatedUser;
+    }
 }
